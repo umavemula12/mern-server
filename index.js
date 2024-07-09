@@ -1,5 +1,5 @@
 
-/*
+
 const express = require('express');
 const mongoose = require('mongoose');
 const { ApolloServer , gql} = require('apollo-server-express');
@@ -24,62 +24,7 @@ mongoose.connect(url , {useNewUrlParser:true , useUnifiedTopology:true})
 const server = new ApolloServer({ typeDefs, resolvers });
 
 
-
-/*
-app.get('/users', async (req, res) => {
-    try {
-      const { data, errors } = await server.executeOperation({
-        query: gql`
-          query {
-            getUsers {
-              name
-              email
-            }
-          }
-        `
-      });
-  
-      if (errors) {
-        console.log(errors);
-        return res.status(500).send({ errors });
-      }
-  
-      res.send(data);
-    } catch (err) {
-      res.status(500).send({ message: err.message });
-    }
-  });
-  
-  app.get('/users/search/:name', async (req, res) => {
-    try {
-      const name = req.params.name;
-      const { data, errors } = await server.executeOperation({
-        query: gql`
-          query ($name: String!) {
-            searchUsers(name: $name) {
-              id
-              name
-              email
-            }
-          }
-        `,
-        variables: { name }
-      });
-  
-      if (errors) {
-        console.log(errors);
-        return res.status(500).send({ errors });
-      }
-  
-      res.send(data);
-    } catch (err) {
-      res.status(500).send({ message: err.message });
-    }
-  });
-  *
-  
-
-  async function startServer() {
+async function startServer() {
   await server.start();
   server.applyMiddleware({ app });
   app.use('/users',userApiFromRouter);
@@ -88,11 +33,6 @@ app.get('/users', async (req, res) => {
   });
 }
 
-*/
-function add(a,b){
-  return a+b;
-}
+startServer();
 
-//startServer();
-
-module.exports = add;
+module.exports=app;
