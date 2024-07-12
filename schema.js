@@ -6,11 +6,20 @@ const typeDefs= gql `
         email: String !,
         password: String!
     }
+    type Post {
+        id: ID!
+        content: String!
+    }
+    type message{
+        id:ID!,
+        message: String !
+    }
     type Query{
         getUser(id: ID!):User,
         getUsers:[User],
         searchUsers(name:String!):[User],
-        getLimitedUser(limit:Int!, offset:Int!):[User]
+        getLimitedUser(limit:Int!, offset:Int!):[User],
+        posts: [Post]
     }
     input createUserInput{
         name:String!,
@@ -28,6 +37,11 @@ const typeDefs= gql `
         changePass(id:ID!, password:String!):User
         updateUser(id:ID!, input:updateUserInput!):User
         deleteUser(id:ID!):User
+        addPost(content: String!): Post
+    }
+    type Subscription {
+        postAdded: Post
     }
 `;
+
 module.exports = typeDefs; //export out

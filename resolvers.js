@@ -4,10 +4,18 @@
 //mutation -> to update the data
 const { Query } = require('mongoose');
 const User = require('./model/userSchema');
+const { PubSub } = require('graphql-subscriptions');
+
 //parent
 //define our resolvers to excute
+const pubsub = new PubSub();
+const POST_ADDED = 'POST_ADDED';
+
+let posts = [];
+
 const resolvers ={
     Query:{
+        posts: () => posts,
         getUser:async(_,{id})=>{
             return await User.findById(id);
         },
@@ -35,9 +43,18 @@ const resolvers ={
         deleteUser: async(_,{id})=>{
             return await User.findByIdAndDelete(id);
         },
+        addPost: (_, { content }) => {
+            const post = { id: String(posts.length + 1), content };
+            posts.push(post);
+            pubsub.publish(POST_ADDED, { postAdded: post });
+            return post;
+          },
     },
-
-    
+    Subscription: {
+        postAdded: {
+          subscribe: () => pubsub.asyncIterator([POST_ADDED]),
+        },
+    },
     User:{
         email:(parent)=> parent.email || '',
         name:(parent)=> parent.name || '',
